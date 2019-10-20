@@ -19,7 +19,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "CREATE TABLE MEMO2(" +
+        String sql = "CREATE TABLE MEMO(" +
                 "idx integer primary key autoincrement," +
                 "textData text not null," +
                 "dateDate date not null" +

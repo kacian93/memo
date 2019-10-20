@@ -29,26 +29,28 @@ public class DBExecute  {
         String sql = "SELECT * FROM memo";
         list= new ArrayList<>();
 
-        Cursor c = db.rawQuery(sql,null);
-
-        while(c.moveToNext()){
-            //Indexnumberを抽出する。
-            int idx_pos = c.getColumnIndex("idx");
-            int textData_pos = c.getColumnIndex("textData");
-            int dateDate_pos = c.getColumnIndex("dateDate");
+        Cursor c = null;
+        c= db.rawQuery(sql,null);
 
 
+            while (c.moveToNext()) {
+                //Indexnumberを抽出する。
+                int idx_pos = c.getColumnIndex("idx");
+                int textData_pos = c.getColumnIndex("textData");
+                int dateDate_pos = c.getColumnIndex("dateDate");
 
-            //indexnumberを通じてデターをもらう
-            int idx= c.getInt(idx_pos);
-            String textData = c.getString(textData_pos);
-            String dateDate = c.getString(dateDate_pos);
 
-            Memo memo = new Memo(textData, dateDate);
+                //indexnumberを通じてデターをもらう
+                int idx = c.getInt(idx_pos);
+                String textData = c.getString(textData_pos);
+                String dateDate = c.getString(dateDate_pos);
 
-            list.add(memo);
-        }
+                Memo memo = new Memo(textData, dateDate);
+
+                list.add(memo);
+            }
         return list;
+
     }
     public SQLiteDatabase openDB(){
         DBHelper helper = new DBHelper(context);

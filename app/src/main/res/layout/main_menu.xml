@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:text="TextView"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="#FFFFFF" />
 
     <ImageButton
         android:id="@+id/createMemo"
@@ -20,6 +21,7 @@
         android:layout_height="30dp"
         android:layout_alignParentRight="true"
         android:background="#00FFFFFF"
+        android:tint="#FFFFFF"
         app:srcCompat="@drawable/add_foreground" />
 
 </RelativeLayout>

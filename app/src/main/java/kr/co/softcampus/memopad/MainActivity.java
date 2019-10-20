@@ -20,13 +20,14 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     static final int REQUEST_INSERTMEMO=100;
-
+    TextView noneMemo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         ActionBar actionBar = getSupportActionBar();
+        noneMemo = (TextView) findViewById(R.id.noneMemo);
 
         //actionbarをカスタマイズができるように
         actionBar.setDisplayShowCustomEnabled(true);
@@ -52,18 +53,23 @@ public class MainActivity extends AppCompatActivity {
 
         actionBar.setCustomView(actionView);
 
-        ArrayList<Memo> list;
+        ArrayList<Memo> list=null;
 
         DBExecute dbExecute = new DBExecute(this);
         list = dbExecute.selectAllMemo();
 
+        if(list!=null) {
+            noneMemo.setText("");
+            RecyclerView recyclerView = findViewById(R.id.recylerview);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            RecyclerViewAdapter adapter = new RecyclerViewAdapter(list);
+            recyclerView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+        }else{
+            noneMemo.setText("メモがありません");
+        }
 
-        RecyclerView recyclerView = findViewById(R.id.recylerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(list);
-        recyclerView.setAdapter(adapter);
 
-        adapter.notifyDataSetChanged();
     }
 
     class NewMemo implements View.OnClickListener{
