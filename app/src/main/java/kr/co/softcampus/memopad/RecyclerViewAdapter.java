@@ -1,6 +1,7 @@
 package kr.co.softcampus.memopad;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,25 +10,52 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-
+        Context context;
         TextView text1;
         TextView text2;
+        TextView idx;
 
         public ViewHolder(View itemView) {
             super(itemView);
-
+            idx = itemView.findViewById(R.id.memoidx);
             text1 = itemView.findViewById(R.id.memoContent);
             text2 = itemView.findViewById(R.id.memodate);
+
         }
 
         void onBind(Memo data) {
-            text1.setText(data.getMemoContent());
+            if(data.getMemoContent().length()>30) {
+                text1.setText(data.getMemoContent().substring(0, 30));
+            }else{
+                text1.setText(data.getMemoContent());
+            }
             text2.setText(data.getMemoDate());
+            idx.setText(data.getMemoIdx()+" ");
+            itemView.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    context = itemView.getContext();
+                    Intent intent = new Intent(context, EditMemo.class);
+
+                    Memo memo = new Memo();
+                    memo.memoContent = text1.getText().toString();
+                    memo.memoDate = text2.getText().toString();
+                    memo.memoIdx = Integer.parseInt(idx.getText().toString().trim());
+
+                    intent.putExtra("memo",memo);
+                    context.startActivity(intent);
+
+
+                }
+            });
+
         }
     }
 
@@ -46,6 +74,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         View view = inflater.inflate(R.layout.list_view, parent, false);
         RecyclerViewAdapter.ViewHolder vh = new RecyclerViewAdapter.ViewHolder(view);
+
 
         return vh;
     }

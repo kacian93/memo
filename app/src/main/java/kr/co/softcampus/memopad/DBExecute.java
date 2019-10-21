@@ -45,7 +45,7 @@ public class DBExecute  {
                 String textData = c.getString(textData_pos);
                 String dateDate = c.getString(dateDate_pos);
 
-                Memo memo = new Memo(textData, dateDate);
+                Memo memo = new Memo(textData, dateDate, idx);
 
                 list.add(memo);
             }
@@ -57,5 +57,26 @@ public class DBExecute  {
         SQLiteDatabase db= helper.getWritableDatabase();
 
         return db;
+    }
+
+    public Memo selectOneMemo(int idx){
+        SQLiteDatabase db= openDB();
+        String sql = "SELECT * FROM memo where idx = "+idx;
+        Cursor c= db.rawQuery(sql,null);
+
+        c.moveToNext();
+        int idx_pos=  c.getColumnIndex("idx");
+        int textData_pos = c.getColumnIndex("textData");
+        int dateData_pos=  c.getColumnIndex("dateDate");
+
+        int idx2 = c.getInt(idx_pos);
+        String textData = c.getString(textData_pos);
+        String dateData = c.getString(dateData_pos);
+
+
+
+        Memo memo = new Memo(textData, dateData,idx2);
+
+        return memo;
     }
 }
