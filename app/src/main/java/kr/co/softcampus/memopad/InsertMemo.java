@@ -36,7 +36,7 @@ public class InsertMemo extends AppCompatActivity {
         String date = sdf.format(new Date());
 
         if(id==android.R.id.home){
-            if(editText.getText()==null){
+            if(editText.getText().toString().equals("")){
                 finish();
             }else{
                 DBExecute db = new DBExecute(this);

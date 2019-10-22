@@ -66,7 +66,7 @@ public class EditMemo extends AppCompatActivity {
 
 
         }else if(id == android.R.id.home){
-            if(editText.getText().equals("")){
+            if(editText.getText().toString().equals("")){
                 db.deleteMemo(selectMemo.memoIdx);
             }
             if(!editText.getText().equals(selectMemo.getMemoContent())){
