@@ -21,6 +21,16 @@ public class MainActivity extends AppCompatActivity {
 
     static final int REQUEST_INSERTMEMO=100;
     TextView noneMemo;
+    DBExecute dbExecute;
+    ArrayList<Memo> list=null;
+    NewMemo newMemo = new NewMemo();
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showMemo();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,17 +55,21 @@ public class MainActivity extends AppCompatActivity {
         ImageButton createMemo= (ImageButton) actionView.findViewById(R.id.createMemo);
 
         //+ボタンを押すと新しいメモが生成します。
-        NewMemo newMemo = new NewMemo();
         createMemo.setOnClickListener(newMemo);
 
 
         text_menu.setText("メモ帳");
 
         actionBar.setCustomView(actionView);
+        showMemo();
 
-        ArrayList<Memo> list=null;
 
-        DBExecute dbExecute = new DBExecute(this);
+
+    }
+
+
+    public void showMemo(){
+        dbExecute = new DBExecute(this);
         list = dbExecute.selectAllMemo();
 
         if(list!=null) {
@@ -71,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
     class NewMemo implements View.OnClickListener{
 
         @Override

@@ -3,6 +3,7 @@ package kr.co.softcampus.memopad;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.Editable;
 import android.util.Log;
 
 import java.lang.reflect.Array;
@@ -78,5 +79,19 @@ public class DBExecute  {
         Memo memo = new Memo(textData, dateData,idx2);
 
         return memo;
+    }
+
+    public void deleteMemo(int idx){
+        SQLiteDatabase db= openDB();
+        String sql = "delete from memo where idx = "+idx;
+        db.execSQL(sql);
+    }
+
+    public void updateMemo(int memoIdx, String text, String today) {
+        SQLiteDatabase db = openDB();
+        String sql = "UPDATE memo SET textData = ?, datedate = ? where idx =?";
+        String[] data = {text,today, String.valueOf(memoIdx) };
+
+        db.execSQL(sql, data);
     }
 }

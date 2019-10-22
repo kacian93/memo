@@ -15,14 +15,19 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class EditMemo extends AppCompatActivity {
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+public class EditMemo extends AppCompatActivity {
+    Memo selectMemo = null;
+    EditText editText;
+    DBExecute db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_memo);
 
-        EditText editText = (EditText)  findViewById(R.id.editmemo);
+         editText = (EditText)  findViewById(R.id.editmemo);
 
         Intent intent = getIntent();
 
@@ -37,11 +42,8 @@ public class EditMemo extends AppCompatActivity {
         actionBar.setTitle("メモ編集");
         actionBar.setHomeButtonEnabled(false);
 
-
-        actionBar.setCustomView(actionView);
-
-        DBExecute db = new DBExecute(this);
-        Memo selectMemo = db.selectOneMemo(memoIdx);
+        db = new DBExecute(this);
+        selectMemo = db.selectOneMemo(memoIdx);
 
         editText.setText(selectMemo.getMemoContent());
 
@@ -63,8 +65,19 @@ public class EditMemo extends AppCompatActivity {
         if(id == R.id.deleteIcon){
 
 
+        }else if(id == android.R.id.home){
+            if(editText.getText().equals("")){
+                db.deleteMemo(selectMemo.memoIdx);
+            }
+            if(!editText.getText().equals(selectMemo.getMemoContent())){
+                SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String today = sdf.format(new Date());
+                db.updateMemo(selectMemo.memoIdx, editText.getText().toString(),today);
+
+            }
         }
 
+        finish();
         return super.onOptionsItemSelected(item);
     }
 }
