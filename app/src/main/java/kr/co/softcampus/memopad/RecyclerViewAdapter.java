@@ -2,6 +2,7 @@ package kr.co.softcampus.memopad;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             }else{
                 text1.setText(data.getMemoContent());
             }
-
+            text1.setGravity(Gravity.CENTER);
             //2行に作るために
             String date = data.getMemoDate().replace(' ','\n');
             text2.setText(date);
