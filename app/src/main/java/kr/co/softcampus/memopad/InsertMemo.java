@@ -27,6 +27,7 @@ public class InsertMemo extends AppCompatActivity {
         actionBar.setHomeButtonEnabled(false);
         actionBar.setTitle("新規メモ");
         actionBar.setDisplayHomeAsUpEnabled(true);
+        //git doesnt work...
     }
 
     @Override
