@@ -1,9 +1,12 @@
 package kr.co.softcampus.memopad;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuView;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -63,21 +66,46 @@ public class EditMemo extends AppCompatActivity {
         int id = item.getItemId();
 
         if(id == R.id.deleteIcon){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
+            builder.setTitle("削除しますか？");
+            builder.setMessage("本当に削除しますか？");
 
-        }else if(id == android.R.id.home){
+            DialogListener listener = new DialogListener();
+
+            builder.setPositiveButton("はい",listener);
+            builder.setNegativeButton("いいえ", null);
+
+            builder.show();
+
+        }
+        if(id == android.R.id.home){
             if(editText.getText().toString().equals("")){
                 db.deleteMemo(selectMemo.memoIdx);
+                finish();
             }
             if(!editText.getText().equals(selectMemo.getMemoContent())){
                 SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String today = sdf.format(new Date());
                 db.updateMemo(selectMemo.memoIdx, editText.getText().toString(),today);
 
+                finish();
             }
         }
 
-        finish();
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private class DialogListener implements DialogInterface.OnClickListener {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which){
+                case DialogInterface.BUTTON_POSITIVE:
+                    db.deleteMemo(selectMemo.getMemoIdx());
+                    finish();
+                    break;
+            }
+        }
     }
 }
