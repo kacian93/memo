@@ -23,13 +23,15 @@ public class MainActivity extends AppCompatActivity {
     static final int REQUEST_INSERTMEMO=100;
     TextView noneMemo;
     DBExecute dbExecute;
-    ArrayList<Memo> list=null;
+    ArrayList<Memo> list= new ArrayList<>();
     NewMemo newMemo = new NewMemo();
-
+    RecyclerView recyclerView;
+    RecyclerViewAdapter adapter = new RecyclerViewAdapter(list);
     @Override
     protected void onResume() {
-        super.onResume();
         showMemo();
+
+        super.onResume();
     }
 
     @Override
@@ -62,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
         text_menu.setText("メモ帳");
 
         actionBar.setCustomView(actionView);
-        showMemo();
 
 
 
@@ -72,14 +73,16 @@ public class MainActivity extends AppCompatActivity {
     public void showMemo(){
         dbExecute = new DBExecute(this);
         list = dbExecute.selectAllMemo();
+        adapter = new RecyclerViewAdapter(list);
+        adapter.notifyDataSetChanged();
 
+
+        recyclerView = findViewById(R.id.recylerview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
 
         if(!list.isEmpty()) {
             noneMemo.setText("");
-            RecyclerView recyclerView = findViewById(R.id.recylerview);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            RecyclerViewAdapter adapter = new RecyclerViewAdapter(list);
-            recyclerView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
         }else{
             noneMemo.setText("メモがありません");
