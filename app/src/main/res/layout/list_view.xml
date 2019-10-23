@@ -9,7 +9,8 @@
         android:id="@+id/memoContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="0.9"
+        android:background="#00FFFFFF"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
@@ -17,7 +18,11 @@
         android:id="@+id/memodate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_gravity="right"
+        android:layout_weight="0.10"
+        android:background="#00FFFFFF"
+        android:duplicateParentState="false"
+        android:gravity="right"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
@@ -26,6 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="TextView" />
+        android:text="TextView"
+        tools:visibility="gone" />
 
 </LinearLayout>

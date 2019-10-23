@@ -65,6 +65,7 @@ public class DBExecute  {
         String sql = "SELECT * FROM memo where idx = "+idx;
         Cursor c= db.rawQuery(sql,null);
 
+
         c.moveToNext();
         int idx_pos=  c.getColumnIndex("idx");
         int textData_pos = c.getColumnIndex("textData");

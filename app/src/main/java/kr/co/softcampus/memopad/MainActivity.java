@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -72,7 +73,8 @@ public class MainActivity extends AppCompatActivity {
         dbExecute = new DBExecute(this);
         list = dbExecute.selectAllMemo();
 
-        if(list!=null) {
+
+        if(!list.isEmpty()) {
             noneMemo.setText("");
             RecyclerView recyclerView = findViewById(R.id.recylerview);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -81,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
             adapter.notifyDataSetChanged();
         }else{
             noneMemo.setText("メモがありません");
+            noneMemo.setGravity(Gravity.CENTER);
         }
 
 
