@@ -2,6 +2,7 @@ package kr.co.softcampus.memopad;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,8 +29,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             text1 = itemView.findViewById(R.id.memoContent);
             text2 = itemView.findViewById(R.id.memodate);
 
-        }
 
+        }
         void onBind(Memo data) {
             if(data.getMemoContent().length()>30) {
                 text1.setText(data.getMemoContent().substring(0, 30));
@@ -44,10 +45,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             text2.setText(date);
             idx.setText(String.valueOf(data.getMemoIdx()));
             idx.setVisibility(View.GONE);
+
             itemView.setOnClickListener(new View.OnClickListener(){
 
                 @Override
                 public void onClick(View v) {
+                    Log.d("test","RecylerView Adapter idx "+ idx.getText().toString() );
                     context = itemView.getContext();
                     Intent intent = new Intent(context, EditMemo.class);
 
