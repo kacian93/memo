@@ -7,14 +7,21 @@
     android:layout_height="match_parent"
     android:padding="10dp"
     tools:context=".InsertMemo">
-
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/memContent"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="top|left"
-        android:padding="10dp"
-        tools:layout_editor_absoluteX="10dp"
-        tools:layout_editor_absoluteY="10dp" />
-
+        android:scrollbarFadeDuration="0"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:scrollbarThumbVertical="@color/colorAccent"
+        android:scrollbarStyle="outsideInset">
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/memContent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="top|left"
+                android:hint="ここで内容を書いてください"
+                android:padding="10dp"
+                tools:layout_editor_absoluteX="9dp"
+                tools:layout_editor_absoluteY="9dp" />
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

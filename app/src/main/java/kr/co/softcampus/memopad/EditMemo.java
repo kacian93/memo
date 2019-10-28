@@ -9,6 +9,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -49,8 +50,7 @@ public class EditMemo extends AppCompatActivity {
         selectMemo = db.selectOneMemo(memoIdx);
 
         editText.setText(selectMemo.getMemoContent());
-
-    }
+        }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -59,6 +59,12 @@ public class EditMemo extends AppCompatActivity {
         inflater.inflate(R.menu.edit_menu,menu);
 
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        deleteMemoClick();
     }
 
     @Override
@@ -80,23 +86,24 @@ public class EditMemo extends AppCompatActivity {
 
         }
         if(id == android.R.id.home){
-            if(editText.getText().toString().equals("")){
-                db.deleteMemo(selectMemo.memoIdx);
-                finish();
-            }
-            if(!editText.getText().equals(selectMemo.getMemoContent())){
-                SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                String today = sdf.format(new Date());
-                db.updateMemo(selectMemo.memoIdx, editText.getText().toString(),today);
-
-                finish();
-            }
+            deleteMemoClick();
         }
 
         return super.onOptionsItemSelected(item);
     }
+    public void deleteMemoClick(){
+        if(editText.getText().toString().equals("")){
+            db.deleteMemo(selectMemo.memoIdx);
+            finish();
+        }
+        if(!editText.getText().equals(selectMemo.getMemoContent())){
+            SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String today = sdf.format(new Date());
+            db.updateMemo(selectMemo.memoIdx, editText.getText().toString(),today);
 
-
+            finish();
+        }
+    }
     private class DialogListener implements DialogInterface.OnClickListener {
         @Override
         public void onClick(DialogInterface dialog, int which) {

@@ -30,21 +30,30 @@ public class InsertMemo extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        insertMeme();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        String date = sdf.format(new Date());
 
         if(id==android.R.id.home){
-            if(editText.getText().toString().equals("")){
-                finish();
-            }else{
-                DBExecute db = new DBExecute(this);
-                db.insertMemo(editText.getText().toString(), date.toString());
-            }
-
+            insertMeme();
         }
         finish();
         return super.onOptionsItemSelected(item);
+    }
+    public void insertMeme(){
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        String date = sdf.format(new Date());
+        if(editText.getText().toString().equals("")){
+            finish();
+        }else{
+            DBExecute db = new DBExecute(this);
+            db.insertMemo(editText.getText().toString(), date);
+        }
     }
 }

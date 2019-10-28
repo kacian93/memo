@@ -27,7 +27,7 @@ public class DBExecute  {
     }
     public ArrayList<Memo> selectAllMemo() {
         SQLiteDatabase db= openDB();
-        String sql = "SELECT * FROM memo";
+        String sql = "SELECT * FROM memo ORDER BY DATEDATE DESC";
         list= new ArrayList<>();
 
         Cursor c = null;
