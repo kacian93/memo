@@ -13,6 +13,7 @@
         android:layout_height="match_parent"
         android:layout_weight="6"
         android:background="#00FFFFFF"
+        android:maxWidth="200dp"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
