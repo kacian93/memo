@@ -15,6 +15,7 @@
         android:background="#00FFFFFF"
         android:maxWidth="200dp"
         android:text="TextView"
+        android:singleLine="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <TextView

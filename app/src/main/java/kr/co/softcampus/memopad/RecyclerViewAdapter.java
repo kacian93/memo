@@ -33,8 +33,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
         void onBind(Memo data) {
             if(data.getMemoContent().length()>30) {
-                text1.setTextSize(14);
-                text1.setText(data.getMemoContent().substring(0, 30)+"…");
+                text1.setText(data.getMemoContent().substring(0, 30));
 
             }else{
                 text1.setText(data.getMemoContent());
