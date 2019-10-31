@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(getApplicationContext(),InsertMemo.class);
+            Intent intent = new Intent(getApplicationContext(),EditMemo.class);
             startActivityForResult(intent, REQUEST_INSERTMEMO);
         }
     }

@@ -24,6 +24,8 @@ public class DBExecute  {
                 "values (?,?)";
         String [] data = {contextData, dateData};
         db.execSQL(sql,data);
+
+        db.close();
     }
     public ArrayList<Memo> selectAllMemo() {
         SQLiteDatabase db= openDB();
@@ -50,6 +52,7 @@ public class DBExecute  {
 
                 list.add(memo);
             }
+            db.close();
         return list;
 
     }
@@ -79,6 +82,8 @@ public class DBExecute  {
 
         Memo memo = new Memo(textData, dateData,idx2);
 
+
+        db.close();
         return memo;
     }
 
@@ -86,6 +91,7 @@ public class DBExecute  {
         SQLiteDatabase db= openDB();
         String sql = "delete from memo where idx = "+idx;
         db.execSQL(sql);
+        db.close();
     }
 
     public void updateMemo(int memoIdx, String text, String today) {
@@ -94,5 +100,7 @@ public class DBExecute  {
         String[] data = {text,today, String.valueOf(memoIdx) };
 
         db.execSQL(sql, data);
+
+        db.close();
     }
 }

@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class EditMemo extends AppCompatActivity {
     Memo selectMemo = null;
@@ -36,21 +37,25 @@ public class EditMemo extends AppCompatActivity {
         Intent intent = getIntent();
 
         Memo memo = intent.getParcelableExtra("memo");
-        int memoIdx = memo.getMemoIdx();
+        int memoIdx = memo==null?0:memo.getMemoIdx();
 
-
-
+        //actionバーを作る
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle("メモ編集");
-        actionBar.setHomeButtonEnabled(false);
 
         db = new DBExecute(this);
-        selectMemo = db.selectOneMemo(memoIdx);
+        if(memoIdx != 0) {
 
-        editText.setText(selectMemo.getMemoContent());
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(true);
+            actionBar.setTitle("メモ編集");
+            actionBar.setHomeButtonEnabled(false);
+
+        }else{
+            actionBar.setHomeButtonEnabled(false);
+            actionBar.setTitle("新規メモ");
+            actionBar.setDisplayHomeAsUpEnabled(true);
         }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -92,17 +97,34 @@ public class EditMemo extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     public void deleteMemoClick(){
-        if(editText.getText().toString().equals("")){
-            db.deleteMemo(selectMemo.memoIdx);
-            finish();
-        }
-        if(!editText.getText().equals(selectMemo.getMemoContent())){
-            SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String today = sdf.format(new Date());
-            db.updateMemo(selectMemo.memoIdx, editText.getText().toString(),today);
 
+        final String currContent  = editText.getText().toString();
+        final String prevContent = selectMemo.getMemoContent();
+        //メモがある場合
+        if(selectMemo!=null) {
+            //内容を全部消した場合
+            if (currContent.equals("")) {
+                db.deleteMemo(selectMemo.memoIdx);
+            }
+            if(currContent.equals(prevContent)){
+                SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String today = sdf.format(new Date());
+                db.updateMemo(selectMemo.memoIdx, editText.getText().toString(),today);
+            }
             finish();
         }
+        //メモが既存にない場合(selectMemo==null)
+        else{
+            //内容を入れた場合
+            if(!currContent.equals("")) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                String today = sdf.format(new Date());
+
+                db.insertMemo(editText.getText().toString(), today);
+                finish();
+            }
+        }
+
     }
     private class DialogListener implements DialogInterface.OnClickListener {
         @Override
@@ -115,4 +137,6 @@ public class EditMemo extends AppCompatActivity {
             }
         }
     }
+
+
 }
