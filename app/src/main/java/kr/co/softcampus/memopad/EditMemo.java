@@ -50,6 +50,8 @@ public class EditMemo extends AppCompatActivity {
             actionBar.setTitle("メモ編集");
             actionBar.setHomeButtonEnabled(false);
 
+            editText.setText(memo.getMemoContent());
+
         }else{
             actionBar.setHomeButtonEnabled(false);
             actionBar.setTitle("新規メモ");
@@ -99,9 +101,9 @@ public class EditMemo extends AppCompatActivity {
     public void deleteMemoClick(){
 
         final String currContent  = editText.getText().toString();
-        final String prevContent = selectMemo.getMemoContent();
         //メモがある場合
         if(selectMemo!=null) {
+            final String prevContent = selectMemo.getMemoContent();
             //内容を全部消した場合
             if (currContent.equals("")) {
                 db.deleteMemo(selectMemo.memoIdx);

@@ -15,6 +15,7 @@
         android:background="#00FFFFFF"
         android:gravity="left"
         android:paddingRight="130dp"
+        android:maxLength="30"
         android:includeFontPadding="false"
         android:singleLine="true"
         android:text="TextView"
