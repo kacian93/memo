@@ -38,7 +38,7 @@ public class EditMemo extends AppCompatActivity {
 
         Memo memo = intent.getParcelableExtra("memo");
         int memoIdx = memo==null?0:memo.getMemoIdx();
-
+        selectMemo = memo;
         //actionバーを作る
         ActionBar actionBar = getSupportActionBar();
 
@@ -94,6 +94,7 @@ public class EditMemo extends AppCompatActivity {
         }
         if(id == android.R.id.home){
             deleteMemoClick();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -108,15 +109,15 @@ public class EditMemo extends AppCompatActivity {
             if (currContent.equals("")) {
                 db.deleteMemo(selectMemo.memoIdx);
             }
-            if(currContent.equals(prevContent)){
+            if(!currContent.equals(prevContent)){
                 SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String today = sdf.format(new Date());
-                db.updateMemo(selectMemo.memoIdx, editText.getText().toString(),today);
+                db.updateMemo(selectMemo.memoIdx, currContent,today);
             }
             finish();
         }
         //メモが既存にない場合(selectMemo==null)
-        else{
+        if(selectMemo==null){
             //内容を入れた場合
             if(!currContent.equals("")) {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");

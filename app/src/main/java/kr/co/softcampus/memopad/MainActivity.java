@@ -6,14 +6,19 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import java.lang.reflect.Array;
@@ -27,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
     TextView noneMemo;
     DBExecute dbExecute;
     ArrayList<Memo> list= new ArrayList<>();
-    NewMemo newMemo = new NewMemo();
     RecyclerView recyclerView;
     RecyclerViewAdapter adapter = new RecyclerViewAdapter(list);
     @Override
@@ -40,7 +44,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+        View view = getLayoutInflater().from(this).inflate(R.layout.activity_main, null);
+        setContentView(view);
+
 
         ActionBar actionBar = getSupportActionBar();
         noneMemo = (TextView) findViewById(R.id.noneMemo);
@@ -53,25 +60,57 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(false);
 
 
-        //actionbarを代替するViewを作る
-        LayoutInflater layoutInflater = getLayoutInflater();
-        View actionView =layoutInflater.inflate(R.layout.main_menu,null);
-
-        TextView text_menu = (TextView)actionView.findViewById(R.id.textView);
-        ImageButton createMemo= (ImageButton) actionView.findViewById(R.id.createMemo);
-
-        //+ボタンを押すと新しいメモが生成します。
-        createMemo.setOnClickListener(newMemo);
-
-
-        text_menu.setText("メモ帳");
-
-        actionBar.setCustomView(actionView);
-
-
-
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu,menu);
+
+
+        MenuItem searchItem = menu.findItem(R.id.search);
+        MenuItem createMemo=  menu.findItem(R.id.createMemo);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+
+                return false;
+            }
+        });
+
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch(id){
+            case R.id.createMemo:
+                Intent intent = new Intent(getApplicationContext(),EditMemo.class);
+                startActivityForResult(intent, REQUEST_INSERTMEMO);
+                break;
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 
     public void showMemo(){
         dbExecute = new DBExecute(this);
@@ -94,13 +133,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-    }
-    class NewMemo implements View.OnClickListener{
-
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(getApplicationContext(),EditMemo.class);
-            startActivityForResult(intent, REQUEST_INSERTMEMO);
-        }
     }
 }
