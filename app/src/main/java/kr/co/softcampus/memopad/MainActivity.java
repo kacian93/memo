@@ -23,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
     static final int REQUEST_INSERTMEMO=100;
     TextView noneMemo;
     DBExecute dbExecute;
+    MenuItem searchItem;
+    SearchView searchView;
     ArrayList<Memo> list= new ArrayList<>();
     RecyclerView recyclerView;
     RecyclerViewAdapter adapter = new RecyclerViewAdapter(list);
@@ -31,6 +33,14 @@ public class MainActivity extends AppCompatActivity {
         showMemo();
 
         super.onResume();
+    }
+
+    @Override
+    protected void onRestart() {
+
+        searchView.setQuery("",false);
+        searchView.clearFocus();
+        super.onRestart();
     }
 
     @Override
@@ -46,9 +56,9 @@ public class MainActivity extends AppCompatActivity {
 
         //actionbarをカスタマイズができるように
         actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setTitle("メモ帳");
 
         //既存のものを隠す
-        actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(false);
 
 
@@ -60,10 +70,8 @@ public class MainActivity extends AppCompatActivity {
         inflater.inflate(R.menu.main_menu,menu);
 
 
-        MenuItem searchItem = menu.findItem(R.id.search);
-        MenuItem createMemo=  menu.findItem(R.id.createMemo);
-        SearchView searchView = (SearchView) searchItem.getActionView();
-
+        searchItem = menu.findItem(R.id.search);
+        searchView = (SearchView) searchItem.getActionView();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
