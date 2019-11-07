@@ -4,10 +4,11 @@
 
     <item
         android:id="@+id/search"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:icon="@android:drawable/ic_menu_search"
         android:title="Search"
-        app:actionViewClass="android.widget.SearchView"
-        app:showAsAction="ifRoom|collapseActionView" />
+        app:showAsAction="always" />
     <item
         android:id="@+id/createMemo"
         android:icon="@android:drawable/ic_menu_add"

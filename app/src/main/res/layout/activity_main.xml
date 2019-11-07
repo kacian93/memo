@@ -1,24 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="#FFE6E6E6"
     android:padding="10dp"
     tools:context=".MainActivity">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recylerview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="vertical"
-            android:scrollbarStyle="insideInset"
-            >
 
-        </androidx.recyclerview.widget.RecyclerView>
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:baselineAligned="false"
+        android:focusable="auto"
+        android:visibility="invisible"
+        app:queryHint="ここに検索キーワードを入力">
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+    </androidx.appcompat.widget.SearchView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recylerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#E6E6E6"
+        android:scrollbarStyle="insideInset"
+        android:scrollbars="vertical"
+        android:visibility="visible">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
     <TextView
         android:id="@+id/noneMemo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="メモがありません" />
-</RelativeLayout>
+</FrameLayout>

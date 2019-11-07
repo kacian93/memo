@@ -2,18 +2,22 @@ package kr.co.softcampus.memopad;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.SearchView;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -24,9 +28,12 @@ public class MainActivity extends AppCompatActivity {
     TextView noneMemo;
     DBExecute dbExecute;
     MenuItem searchItem;
+    String prevSearch;
     SearchView searchView;
+    boolean isClosed=true;
     ArrayList<Memo> list= new ArrayList<>();
     RecyclerView recyclerView;
+    ImageView searchCloseBtn;
     RecyclerViewAdapter adapter = new RecyclerViewAdapter(list);
     @Override
     protected void onResume() {
@@ -35,13 +42,6 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
     }
 
-    @Override
-    protected void onRestart() {
-
-        searchView.setQuery("",false);
-        searchView.clearFocus();
-        super.onRestart();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,18 +71,30 @@ public class MainActivity extends AppCompatActivity {
 
 
         searchItem = menu.findItem(R.id.search);
-        searchView = (SearchView) searchItem.getActionView();
+
+        //検索のページの住所を持っておく
+
+        searchView=  (SearchView) findViewById(R.id.searchText);
+
+        Button closeBtn = new Button(this);
+        closeBtn.setBackgroundResource(R.drawable.ic_menu_close_clear_cancel_background);
+
+
+
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                //検索のボタンを押した場合イベント処理
+
+
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 adapter.getFilter().filter(newText);
-
+                prevSearch = newText;
                 return false;
             }
         });
@@ -100,7 +112,10 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(),EditMemo.class);
                 startActivityForResult(intent, REQUEST_INSERTMEMO);
                 break;
+            case R.id.search:
 
+                closeOrShow(isClosed);
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -108,8 +123,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        closeOrShow(isClosed);
         super.onBackPressed();
-        finish();
     }
 
     public void showMemo(){
@@ -133,5 +148,23 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+    }
+    public void closeOrShow(boolean currStat){
+        isClosed = currStat;
+        if(isClosed==true) {
+            recyclerView.setPadding(0, searchView.getHeight()+20, 0, 0);
+            searchView.setVisibility(View.VISIBLE);
+            searchView.onActionViewExpanded();
+            searchView.callOnClick();
+            searchView.bringToFront();
+            isClosed=false;
+            Log.d("test","open");
+        }else{
+            searchView.setVisibility(View.INVISIBLE);
+            searchView.setQuery("",false);
+            recyclerView.setPadding(0,0,0,0);
+            Log.d("test","close");
+            isClosed=true;
+        }
     }
 }
