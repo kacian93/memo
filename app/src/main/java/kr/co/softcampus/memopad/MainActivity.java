@@ -123,7 +123,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        closeOrShow(isClosed);
+        if(isClosed==false){
+            closeOrShow(isClosed);
+            return;
+        }
         super.onBackPressed();
     }
 
