@@ -3,7 +3,6 @@ package kr.co.softcampus.memopad;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,7 +16,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -33,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
     boolean isClosed=true;
     ArrayList<Memo> list= new ArrayList<>();
     RecyclerView recyclerView;
-    ImageView searchCloseBtn;
     RecyclerViewAdapter adapter = new RecyclerViewAdapter(list);
     @Override
     protected void onResume() {
@@ -95,6 +92,11 @@ public class MainActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String newText) {
                 adapter.getFilter().filter(newText);
                 prevSearch = newText;
+
+                list = dbExecute.searchMemo(newText);
+                if(newText.equals("")|| newText.length()==0){
+                    list=dbExecute.selectAllMemo();
+                }
                 return false;
             }
         });
@@ -132,7 +134,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void showMemo(){
         dbExecute = new DBExecute(this);
-        list = dbExecute.selectAllMemo();
+        if(list.isEmpty()) {
+            list = dbExecute.selectAllMemo();
+        }
         adapter = new RecyclerViewAdapter(list);
         adapter.notifyDataSetChanged();
 
@@ -155,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
     public void closeOrShow(boolean currStat){
         isClosed = currStat;
         if(isClosed==true) {
-            recyclerView.setPadding(0, searchView.getHeight()+20, 0, 0);
+            recyclerView.setPadding(0, searchView.getHeight()+50, 0, 0);
             searchView.setVisibility(View.VISIBLE);
             searchView.onActionViewExpanded();
             searchView.callOnClick();

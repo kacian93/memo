@@ -8,6 +8,7 @@ import android.util.Log;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DBExecute  {
     Context context;
@@ -86,7 +87,31 @@ public class DBExecute  {
         db.close();
         return memo;
     }
+    public ArrayList<Memo> searchMemo(String prevSearch){
+        SQLiteDatabase db= openDB();
+        String sql = "select * from memo where textData like '%"+prevSearch+"%'";
+        ArrayList<Memo> searchContent = new ArrayList<>();
 
+        Cursor  c=  db.rawQuery(sql, null);
+
+        while(c.moveToNext()){
+            int idx_pos=  c.getColumnIndex("idx");
+            int textData_pos = c.getColumnIndex("textData");
+            int dateData_pos=  c.getColumnIndex("dateDate");
+
+            int idx2 = c.getInt(idx_pos);
+            String textData = c.getString(textData_pos);
+            String dateData = c.getString(dateData_pos);
+
+            Memo memo = new Memo(textData,dateData, idx2);
+
+            searchContent.add(memo);
+        }
+
+
+        db.close();
+        return searchContent;
+    }
     public void deleteMemo(int idx){
         SQLiteDatabase db= openDB();
         String sql = "delete from memo where idx = "+idx;
