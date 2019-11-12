@@ -32,12 +32,6 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Memo> list= new ArrayList<>();
     RecyclerView recyclerView;
     RecyclerViewAdapter adapter = new RecyclerViewAdapter(list);
-    @Override
-    protected void onResume() {
-        showMemo();
-
-        super.onResume();
-    }
 
 
     @Override
@@ -59,6 +53,12 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(false);
 
 
+    }
+    @Override
+    protected void onResume() {
+        showMemo();
+
+        super.onResume();
     }
 
     @Override
@@ -134,9 +134,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void showMemo(){
         dbExecute = new DBExecute(this);
-        if(list.isEmpty()) {
-            list = dbExecute.selectAllMemo();
-        }
+        list = dbExecute.selectAllMemo();
         adapter = new RecyclerViewAdapter(list);
         adapter.notifyDataSetChanged();
 
@@ -147,9 +145,10 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         if(!list.isEmpty()) {
-            noneMemo.setText("");
+            noneMemo.setVisibility(View.GONE);
             adapter.notifyDataSetChanged();
         }else{
+            noneMemo.setVisibility(View.VISIBLE);
             noneMemo.setText("メモがありません");
             noneMemo.setGravity(Gravity.CENTER);
         }

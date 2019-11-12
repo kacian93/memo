@@ -33,8 +33,7 @@ public class DBExecute  {
         String sql = "SELECT * FROM memo ORDER BY DATEDATE DESC";
         list= new ArrayList<>();
 
-        Cursor c = null;
-        c= db.rawQuery(sql,null);
+        Cursor c= db.rawQuery(sql,null);
 
 
             while (c.moveToNext()) {
@@ -53,6 +52,7 @@ public class DBExecute  {
 
                 list.add(memo);
             }
+            c.close();
             db.close();
         return list;
 
@@ -83,7 +83,7 @@ public class DBExecute  {
 
         Memo memo = new Memo(textData, dateData,idx2);
 
-
+        c.close();
         db.close();
         return memo;
     }
@@ -108,7 +108,7 @@ public class DBExecute  {
             searchContent.add(memo);
         }
 
-
+        c.close();
         db.close();
         return searchContent;
     }

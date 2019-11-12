@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -63,7 +64,6 @@ public class EditMemo extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        deleteMemoClick();
     }
 
     @Override
@@ -92,16 +92,15 @@ public class EditMemo extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     public void deleteMemoClick(){
-
         final String currContent  = editText.getText().toString();
         //メモがある場合
-        if(selectMemo!=null) {
+        if(selectMemo!=null ) {
             final String prevContent = selectMemo.getMemoContent();
             //内容を全部消した場合
-            if (currContent.equals("")) {
+            if (currContent.equals("")|| currContent.length()<1) {
                 db.deleteMemo(selectMemo.memoIdx);
             }
-            if(!currContent.equals(prevContent)){
+            else if(!currContent.equals(prevContent)){
                 SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String today = sdf.format(new Date());
                 db.updateMemo(selectMemo.memoIdx, currContent,today);
@@ -109,7 +108,8 @@ public class EditMemo extends AppCompatActivity {
             finish();
         }
         //メモが既存にない場合(selectMemo==null)
-        if(selectMemo==null){
+        else{
+            //内容を入れた場合
             //内容を入れた場合
             if(!currContent.equals("")) {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
