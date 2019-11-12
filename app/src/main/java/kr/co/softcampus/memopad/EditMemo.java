@@ -13,8 +13,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
 
+import java.text.DateFormat;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class EditMemo extends AppCompatActivity {
     Memo selectMemo = null;
@@ -101,8 +108,14 @@ public class EditMemo extends AppCompatActivity {
                 db.deleteMemo(selectMemo.memoIdx);
             }
             else if(!currContent.equals(prevContent)){
-                SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                String today = sdf.format(new Date());
+                Calendar cal= Calendar.getInstance();
+                ParsePosition pos = new ParsePosition(0);
+
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.JAPAN);
+                format.setTimeZone(cal.getTimeZone());
+
+                String todayStr = format.format(cal.getTime());
+                Date today = format.parse(todayStr,pos);
                 db.updateMemo(selectMemo.memoIdx, currContent,today);
             }
             finish();
@@ -110,10 +123,12 @@ public class EditMemo extends AppCompatActivity {
         //メモが既存にない場合(selectMemo==null)
         else{
             //内容を入れた場合
-            //内容を入れた場合
             if(!currContent.equals("")) {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                String today = sdf.format(new Date());
+                String todayStr = sdf.format(new Date());
+
+                ParsePosition pos = new ParsePosition(0);
+                Date today = sdf.parse(todayStr,pos);
 
                 db.insertMemo(editText.getText().toString(), today);
                 finish();

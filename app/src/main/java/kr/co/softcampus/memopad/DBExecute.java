@@ -7,7 +7,10 @@ import android.text.Editable;
 import android.util.Log;
 
 import java.lang.reflect.Array;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DBExecute  {
@@ -16,14 +19,16 @@ public class DBExecute  {
     DBExecute(Context context){
         this.context = context;
     }
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    ParsePosition pos = new ParsePosition(0);
 
 
-    public void insertMemo(String contextData, String dateData){
+    public void insertMemo(String contextData, Date dateData){
         SQLiteDatabase db = openDB();
 
         String sql = "insert into memo(textData, dateDate)" +
                 "values (?,?)";
-        String [] data = {contextData, dateData};
+        Object [] data = {contextData, dateData};
         db.execSQL(sql,data);
 
         db.close();
@@ -33,7 +38,7 @@ public class DBExecute  {
         String sql = "SELECT * FROM memo ORDER BY DATEDATE DESC";
         list= new ArrayList<>();
 
-        Cursor c= db.rawQuery(sql,null);
+        final Cursor c= db.rawQuery(sql,null);
 
 
             while (c.moveToNext()) {
@@ -47,6 +52,7 @@ public class DBExecute  {
                 int idx = c.getInt(idx_pos);
                 String textData = c.getString(textData_pos);
                 String dateDate = c.getString(dateDate_pos);
+
 
                 Memo memo = new Memo(textData, dateDate, idx);
 
@@ -64,35 +70,12 @@ public class DBExecute  {
         return db;
     }
 
-    public Memo selectOneMemo(int idx){
-        SQLiteDatabase db= openDB();
-        String sql = "SELECT * FROM memo where idx = "+idx;
-        Cursor c= db.rawQuery(sql,null);
-
-
-        c.moveToNext();
-        int idx_pos=  c.getColumnIndex("idx");
-        int textData_pos = c.getColumnIndex("textData");
-        int dateData_pos=  c.getColumnIndex("dateDate");
-
-        int idx2 = c.getInt(idx_pos);
-        String textData = c.getString(textData_pos);
-        String dateData = c.getString(dateData_pos);
-
-
-
-        Memo memo = new Memo(textData, dateData,idx2);
-
-        c.close();
-        db.close();
-        return memo;
-    }
     public ArrayList<Memo> searchMemo(String prevSearch){
         SQLiteDatabase db= openDB();
         String sql = "select * from memo where textData like '%"+prevSearch+"%'";
         ArrayList<Memo> searchContent = new ArrayList<>();
 
-        Cursor  c=  db.rawQuery(sql, null);
+        final Cursor  c=  db.rawQuery(sql, null);
 
         while(c.moveToNext()){
             int idx_pos=  c.getColumnIndex("idx");
@@ -102,7 +85,6 @@ public class DBExecute  {
             int idx2 = c.getInt(idx_pos);
             String textData = c.getString(textData_pos);
             String dateData = c.getString(dateData_pos);
-
             Memo memo = new Memo(textData,dateData, idx2);
 
             searchContent.add(memo);
@@ -119,13 +101,15 @@ public class DBExecute  {
         db.close();
     }
 
-    public void updateMemo(int memoIdx, String text, String today) {
+    public void updateMemo(int memoIdx, String text, Date today) {
         SQLiteDatabase db = openDB();
         String sql = "UPDATE memo SET textData = ?, datedate = ? where idx =?";
-        String[] data = {text,today, String.valueOf(memoIdx) };
+        Object[] data = {text,today, String.valueOf(memoIdx) };
 
         db.execSQL(sql, data);
 
         db.close();
     }
+
+
 }
