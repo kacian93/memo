@@ -108,15 +108,13 @@ public class EditMemo extends AppCompatActivity {
                 db.deleteMemo(selectMemo.memoIdx);
             }
             else if(!currContent.equals(prevContent)){
-                Calendar cal= Calendar.getInstance();
-                ParsePosition pos = new ParsePosition(0);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                final Date now = new Date();
+                sdf.format(now);
 
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.JAPAN);
-                format.setTimeZone(cal.getTimeZone());
 
-                String todayStr = format.format(cal.getTime());
-                Date today = format.parse(todayStr,pos);
-                db.updateMemo(selectMemo.memoIdx, currContent,today);
+
+                db.updateMemo(selectMemo.memoIdx, currContent,now);
             }
             finish();
         }
@@ -125,12 +123,11 @@ public class EditMemo extends AppCompatActivity {
             //内容を入れた場合
             if(!currContent.equals("")) {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                String todayStr = sdf.format(new Date());
+                final Date now = new Date();
+                sdf.format(now);
 
-                ParsePosition pos = new ParsePosition(0);
-                Date today = sdf.parse(todayStr,pos);
 
-                db.insertMemo(editText.getText().toString(), today);
+                db.insertMemo(editText.getText().toString(), now);
                 finish();
             }
         }

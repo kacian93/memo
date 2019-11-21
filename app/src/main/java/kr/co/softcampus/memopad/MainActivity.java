@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     }
     @Override
     protected void onResume() {
-        if(list.isEmpty()||prevSearch.length()<1||prevSearch.equals(""))
+        if(list.isEmpty()||prevSearch==null||prevSearch.length()<1||prevSearch.equals(""))
             showMemo();
 
         super.onResume();

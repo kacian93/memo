@@ -41,8 +41,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             text1.setText(data.getMemoContent());
             text1.setGravity(Gravity.LEFT);
             //2行に作るために
-            String date = data.getMemoDate().replace(' ', '\n');
-            text2.setText(date);
+
+            text2.setText(data.getMemoDate());
             idx.setText(String.valueOf(data.getMemoIdx()));
             idx.setVisibility(View.GONE);
 
