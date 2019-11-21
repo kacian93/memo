@@ -7,6 +7,8 @@ import android.text.Editable;
 import android.util.Log;
 
 import java.lang.reflect.Array;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -54,7 +56,9 @@ public class DBExecute  {
                 String dateDate = c.getString(dateDate_pos);
 
 
-                Memo memo = new Memo(textData, dateDate, idx);
+
+                Date time = changeDateToStr(dateDate);
+                Memo memo = new Memo(textData,time, idx);
 
                 list.add(memo);
             }
@@ -85,7 +89,9 @@ public class DBExecute  {
             int idx2 = c.getInt(idx_pos);
             String textData = c.getString(textData_pos);
             String dateData = c.getString(dateData_pos);
-            Memo memo = new Memo(textData,dateData, idx2);
+
+            Date time = changeDateToStr(dateData);
+            Memo memo = new Memo(textData,time, idx2);
 
             searchContent.add(memo);
         }
@@ -102,14 +108,25 @@ public class DBExecute  {
     }
 
     public void updateMemo(int memoIdx, String text, Date today) {
-        SQLiteDatabase db = openDB();
-        String sql = "UPDATE memo SET textData = ?, datedate = ? where idx =?";
+        final SQLiteDatabase db = openDB();
+        final String sql = "UPDATE memo SET textData = ?, datedate = ? where idx =?";
         Object[] data = {text,today, String.valueOf(memoIdx) };
 
         db.execSQL(sql, data);
 
         db.close();
     }
+    public Date changeDateToStr(String time){
 
+        DateFormat origin = new SimpleDateFormat("EEE MMM dd hh:mm:ss 'GMT' yyyy");
+        Date timeDate =null;
+        try {
+            timeDate = origin.parse(time);
 
+        } catch (ParseException e) {
+            e.printStackTrace();
+
+        }
+        return timeDate;
+    }
 }

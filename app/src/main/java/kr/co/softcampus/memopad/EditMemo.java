@@ -108,9 +108,7 @@ public class EditMemo extends AppCompatActivity {
                 db.deleteMemo(selectMemo.memoIdx);
             }
             else if(!currContent.equals(prevContent)){
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                 final Date now = new Date();
-                sdf.format(now);
 
 
 
@@ -122,9 +120,7 @@ public class EditMemo extends AppCompatActivity {
         else{
             //内容を入れた場合
             if(!currContent.equals("")) {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                 final Date now = new Date();
-                sdf.format(now);
 
 
                 db.insertMemo(editText.getText().toString(), now);

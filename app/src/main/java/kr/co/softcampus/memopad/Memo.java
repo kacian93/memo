@@ -3,10 +3,14 @@ package kr.co.softcampus.memopad;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 class Memo implements Parcelable {
 
     String memoContent;
-    String memoDate;
+    Date memoDate;
     int memoIdx;
 
     //デターをもらったActivityで復元する
@@ -15,7 +19,11 @@ class Memo implements Parcelable {
         public Memo createFromParcel(Parcel source) {
             Memo memo = new Memo();
             memo.memoContent = source.readString();
-            memo.memoDate = source.readString();
+            try {
+                memo.memoDate = new SimpleDateFormat("yyyy-MM-dd\nhh:mm:ss").parse(source.readString());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             memo.memoIdx = source.readInt();
             return  memo;
         }
@@ -31,13 +39,13 @@ class Memo implements Parcelable {
 
     }
 
-    public Memo(String memoContent, String memoDate, int memoIdx) {
+    public Memo(String memoContent, Date memoDate, int memoIdx) {
         this.memoContent = memoContent;
         this.memoDate = memoDate;
         this.memoIdx = memoIdx;
     }
 
-    public Memo(String memoContent, String memoDate) {
+    public Memo(String memoContent, Date memoDate) {
         this.memoContent = memoContent;
         this.memoDate = memoDate;
     }
@@ -50,11 +58,11 @@ class Memo implements Parcelable {
         this.memoContent = memoContent;
     }
 
-    public String getMemoDate() {
+    public Date getMemoDate() {
         return memoDate;
     }
 
-    public void setMemoDate(String memoDate) {
+    public void setMemoDate(Date memoDate) {
         this.memoDate = memoDate;
     }
 
@@ -77,7 +85,7 @@ class Memo implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(memoContent);
-        dest.writeString(memoDate);
+        dest.writeString(memoDate.toString());
         dest.writeInt(memoIdx);
     }
 }

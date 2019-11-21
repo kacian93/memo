@@ -10,6 +10,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,8 +42,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             text1.setText(data.getMemoContent());
             text1.setGravity(Gravity.LEFT);
             //2行に作るために
-
-            text2.setText(data.getMemoDate());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd\nHH:mm:ss");
+            text2.setText(sdf.format(data.getMemoDate()));
             idx.setText(String.valueOf(data.getMemoIdx()));
             idx.setVisibility(View.GONE);
 

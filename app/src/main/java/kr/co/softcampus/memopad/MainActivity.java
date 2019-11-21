@@ -52,14 +52,22 @@ public class MainActivity extends AppCompatActivity {
         //既存のものを隠す
         actionBar.setDisplayHomeAsUpEnabled(false);
 
+        showMemo();
 
     }
     @Override
     protected void onResume() {
-        if(list.isEmpty()||prevSearch==null||prevSearch.length()<1||prevSearch.equals(""))
-            showMemo();
 
+        if(!(prevSearch==null||prevSearch.length()<1||prevSearch.equals(""))) {
+            list = dbExecute.searchMemo(prevSearch);
+        }
         super.onResume();
+    }
+
+    @Override
+    protected void onRestart() {
+        showMemo();
+        super.onRestart();
     }
 
     @Override
@@ -134,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showMemo(){
+        Log.d("test","showMemo");
         dbExecute = new DBExecute(this);
         list = dbExecute.selectAllMemo();
         adapter = new RecyclerViewAdapter(list);
