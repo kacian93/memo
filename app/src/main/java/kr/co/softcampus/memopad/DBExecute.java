@@ -28,9 +28,12 @@ public class DBExecute  {
     public void insertMemo(String contextData, Date dateData){
         SQLiteDatabase db = openDB();
 
+        SimpleDateFormat sdf =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateDate = sdf.format(dateData);
+
         String sql = "insert into memo(textData, dateDate)" +
                 "values (?,?)";
-        Object [] data = {contextData, dateData};
+        Object [] data = {contextData, dateDate};
         db.execSQL(sql,data);
 
         db.close();
@@ -110,7 +113,12 @@ public class DBExecute  {
     public void updateMemo(int memoIdx, String text, Date today) {
         final SQLiteDatabase db = openDB();
         final String sql = "UPDATE memo SET textData = ?, datedate = ? where idx =?";
-        Object[] data = {text,today, String.valueOf(memoIdx) };
+
+
+        SimpleDateFormat sdf =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateData = sdf.format(today);
+
+        Object[] data = {text,dateData, String.valueOf(memoIdx) };
 
         db.execSQL(sql, data);
 
@@ -118,7 +126,7 @@ public class DBExecute  {
     }
     public Date changeDateToStr(String time){
 
-        DateFormat origin = new SimpleDateFormat("EEE MMM dd hh:mm:ss 'GMT' yyyy");
+        DateFormat origin = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date timeDate =null;
         try {
             timeDate = origin.parse(time);
